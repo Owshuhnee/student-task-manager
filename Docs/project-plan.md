@@ -45,14 +45,14 @@
 
 | Purpose            | Tools                    |
 | ------------------ | ------------------------ |
-| Version Control    | Git + Github             |
-| Lo-fi wireframe    | Frame0                   |
-| Hi-fi wireframe    | Figma                    |
+| Paper Sketch       | Excalidraw               |
+| Wireframe          | Figma                    |
 | Prototype          | Figma                    |
-| User testing       | Maze - Figma Prototype   |
+| User testing       | Maze                     |
 | Functional Testing | Thunder Client / Postman |
-| Project Management | Jira                     |
-| Documentation      | Obsidian                 |
+| Version Control    | Git + Github             |
+| Project Management | Github Projects          |
+| Documentation      | Obsidian + Github MD     |
 
 
 ## 7.2 Coding languages and Technology
