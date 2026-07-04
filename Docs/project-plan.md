@@ -45,7 +45,7 @@
 
 | Purpose            | Tools                    |
 | ------------------ | ------------------------ |
-| Paper Sketch       | Excalidraw               |
+| Paper Sketch       | Frame0               |
 | Wireframe          | Figma                    |
 | Prototype          | Figma                    |
 | User testing       | Maze                     |
