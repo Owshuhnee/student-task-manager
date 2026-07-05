@@ -11,18 +11,28 @@ A full-stack task management web application built for Fander University student
 | Layer | Technology |
 |-------|-----------|
 | Version Control | Git + Github |
+| IDE | VS Code |
 | Lo-Fi Wireframe | Frame0 |
 | Hi-Fi Wireframe | Figma|
-| Prototype and UAT | Maze + Figma Prototype |
-| Frontend | React + Vite + TypeScript + Tailwind CSS | 
-| Backend | Python + Flask | 
+| Prototype and UAT | Maze |
+| Frontend | React + Vite + TypeScript | 
+| Backend | Python 3.11+ | 
+| API | REST (Flask) |
 | Database | PostgreSQL |
-| Cloud | AWS |
-| Project Management | Jira |
-| Documentation | Obsidian |
+| Styling | Tailwind CSS |
+| Project Management | Github Projects |
+| Documentation and Notes | Obsidian |
 | Functional Testing | Postman |
 | Unit Testing | Pytest |
+| Cloud | AWS |
 
+## AWS Deployment 
+
+- **Compute:** AWS EC2 / Elastic Beanstalk
+- **Database:** AWS RDS (PostgreSQL)
+- **Static Assets:** AWS S3
+- **Security:** AWS IAM + ACM (SSL/HTTPS)
+- **Monitoring:** AWS CloudWatch
 
 ## Features
 
@@ -71,13 +81,6 @@ cloud-app-dev-project/
 - [API Endpoints](docs/api-endpoints.md)
 - [Wireframes](wireframes/) - [Figma Link](#)
 
-## AWS Deployment ?
-
-- **Compute:** AWS EC2 / Elastic Beanstalk
-- **Database:** AWS RDS (PostgreSQL)
-- **Static Assets:** AWS S3
-- **Security:** AWS IAM + ACM (SSL/HTTPS)
-- **Monitoring:** AWS CloudWatch
 
 > Live URL: *(added after deployment)*
 
