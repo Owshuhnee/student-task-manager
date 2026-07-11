@@ -86,3 +86,6 @@ Ongoing, Complete, Incomplete).
   track outstanding work and immediately identify missed deadlines 
   requiring reflection (per FR-11)
 - **Priority:** High
+
+
+## Non-Functional Requirements
