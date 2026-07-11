@@ -35,7 +35,15 @@
 ## 5.0 Cloud Services Projected Costs
 
 ---
-## 6.0 User acceptance test criteria
+## 6.0 User Acceptance Test Criteria
+
+Acceptance criteria for the Student Task Manager are maintained
+as a standalone deliverable.
+
+See: [UAT Criteria](./uat-criteria.md)
+
+The system is accepted when all functional criteria (UAT-01 to
+UAT-07) pass, and security criteria UAT-08.3 and UAT-08.4 pass.
 
 ---
 
