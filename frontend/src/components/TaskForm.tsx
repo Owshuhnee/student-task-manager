@@ -1,127 +1,188 @@
-import { useState, type FormEvent } from 'react'
-import { createTask, updateTask } from '../api/tasks'
-import type { Task, TaskPriority, TaskStatus } from '../types/task'
-import ReflectionModal from './ReflectionModal'
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Trash } from '@phosphor-icons/react';
+import * as tasksApi from '../api/tasks';
+import ReflectionModal from './ReflectionModal';
+import type { Task, TaskPriority, TaskStatus } from '../types/task';
 
 interface TaskFormProps {
-  existingTask?: Task
-  onSave: () => void
-  onCancel: () => void
+  existingTask?: Task;
+  onSaved: (task: Task) => void;
+  onClose: () => void;
+  onRequestDelete?: () => void;
 }
 
-function TaskForm({ existingTask, onSave, onCancel }: TaskFormProps) {
-  const [title, setTitle] = useState(existingTask?.title ?? '')
-  const [description, setDescription] = useState(existingTask?.description ?? '')
-  const [dueDate, setDueDate] = useState(existingTask?.due_date ?? '')
-  const [priority, setPriority] = useState<TaskPriority>(existingTask?.priority ?? 'Medium')
-  const [status, setStatus] = useState<TaskStatus>(existingTask?.status ?? 'Backlog')
-  const [notes, setNotes] = useState(existingTask?.notes ?? '')
-  const [reflection, setReflection] = useState(existingTask?.reflection ?? '')
-  const [showReflectionModal, setShowReflectionModal] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export default function TaskForm({ existingTask, onSaved, onClose, onRequestDelete }: TaskFormProps) {
+  const [title, setTitle] = useState(existingTask?.title ?? '');
+  const [description, setDescription] = useState(existingTask?.description ?? '');
+  const [dueDate, setDueDate] = useState(existingTask?.due_date ?? '');
+  const [priority, setPriority] = useState<TaskPriority>(existingTask?.priority ?? 'Medium');
+  const [status, setStatus] = useState<TaskStatus>(existingTask?.status ?? 'Backlog');
+  const [notes, setNotes] = useState(existingTask?.notes ?? '');
+  const [reflection, setReflection] = useState(existingTask?.reflection ?? '');
+  const [showReflectionModal, setShowReflectionModal] = useState(false);
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
 
   function handleStatusChange(newStatus: TaskStatus) {
     if (newStatus === 'Incomplete') {
-      setShowReflectionModal(true) // status isn't committed until the reflection is confirmed
-    } else {
-      setStatus(newStatus)
+      setShowReflectionModal(true);
+      return;
     }
+    setStatus(newStatus);
   }
 
-  function handleReflectionSave() {
-    setStatus('Incomplete')
-    setShowReflectionModal(false)
+  function confirmIncomplete() {
+    setStatus('Incomplete');
+    setShowReflectionModal(false);
   }
 
-  function handleReflectionCancel() {
-    setShowReflectionModal(false)
-    // status was never changed, so the <select> snaps back to whatever it was on its own
+  function cancelIncomplete() {
+    setShowReflectionModal(false);
   }
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setError(null)
-    const payload = {
-      title,
-      description,
-      due_date: dueDate,
-      priority,
-      status,
-      notes,
-      reflection: status === 'Incomplete' ? reflection : undefined,
+    e.preventDefault();
+    setError('');
+
+    if (!title.trim()) {
+      setError('Title is required.');
+      return;
     }
+    if (!dueDate) {
+      setError('Due date is required.');
+      return;
+    }
+
+    setSaving(true);
     try {
-      if (existingTask) {
-        await updateTask(existingTask.id, payload)
-      } else {
-        await createTask(payload)
-      }
-      onSave()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save task')
+      const payload = { title, description, due_date: dueDate, priority, status, notes, reflection };
+      const saved = existingTask
+        ? await tasksApi.updateTask(existingTask.id, payload)
+        : await tasksApi.createTask(payload);
+      onSaved(saved);
+    } catch {
+      setError('Could not save task. Please try again.');
+    } finally {
+      setSaving(false);
     }
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <h2>{existingTask ? 'Edit Task' : 'New Task'}</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl font-['Manrope']">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-bold text-[#171717]">{existingTask ? 'Edit Task' : 'New Task'}</h2>
+            {existingTask && onRequestDelete && (
+              <button
+                type="button"
+                onClick={onRequestDelete}
+                className="flex items-center gap-1 text-sm font-medium text-red-600 hover:text-red-700"
+              >
+                <Trash size={16} weight="bold" />
+                Delete
+              </button>
+            )}
+          </div>
 
-        <label>
-          Title
-          <input value={title} onChange={(e) => setTitle(e.target.value)} required />
-        </label>
+          {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
-        <label>
-          Description
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-        </label>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <div>
+              <label className="text-xs font-medium text-[#525252]">Title</label>
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+              />
+            </div>
 
-        <label>
-          Due date
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
-        </label>
+            <div>
+              <label className="text-xs font-medium text-[#525252]">Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={2}
+                className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+              />
+            </div>
 
-        <label>
-          Priority
-          <select value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-        </label>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-[#525252]">Due Date</label>
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-[#525252]">Priority</label>
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value as TaskPriority)}
+                  className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+                >
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
 
-        <label>
-          Status
-          <select value={status} onChange={(e) => handleStatusChange(e.target.value as TaskStatus)}>
-            <option value="Backlog">Backlog</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Complete">Complete</option>
-            <option value="Incomplete">Incomplete</option>
-          </select>
-        </label>
+            <div>
+              <label className="text-xs font-medium text-[#525252]">Status</label>
+              <select
+                value={status}
+                onChange={(e) => handleStatusChange(e.target.value as TaskStatus)}
+                className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+              >
+                <option value="Backlog">To do</option>
+                <option value="Ongoing">In Progress</option>
+                <option value="Complete">Complete</option>
+                <option value="Incomplete">Incomplete</option>
+              </select>
+            </div>
 
-        {status === 'Incomplete' && reflection && <p><em>Reflection: {reflection}</em></p>}
+            <div>
+              <label className="text-xs font-medium text-[#525252]">Notes</label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+                className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+              />
+            </div>
 
-        <label>
-          Notes
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
-        </label>
-
-        <button type="submit">Save</button>
-        <button type="button" onClick={onCancel}>Cancel</button>
-      </form>
+            <div className="mt-2 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-2xl px-4 py-2 text-sm font-medium text-[#6b6b6b] hover:text-[#171717]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="rounded-2xl bg-[#171717] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2b2b2b] disabled:opacity-50"
+              >
+                {saving ? 'Saving...' : 'Save'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <ReflectionModal
         open={showReflectionModal}
         value={reflection}
         onChange={setReflection}
-        onSave={handleReflectionSave}
-        onCancel={handleReflectionCancel}
+        onSave={confirmIncomplete}
+        onCancel={cancelIncomplete}
       />
     </>
-  )
+  );
 }
-
-export default TaskForm

@@ -28,28 +28,28 @@ function Register() {
 
   return (
     <div className="min-h-screen flex font-['Manrope']">
-      {/* Left panel — branding, white bg, muted text, hidden on small screens */}
+      {/* Left panel — branding, white bg, dark text, hidden on small screens (mobile or table) */}
       <div className="hidden md:flex md:w-1/2 bg-white flex-col justify-center gap-[60px] p-16 lg:p-24">
         <div>
-          <h2 className="text-2xl font-bold text-[rgba(23,23,23,0.47)]">Fander</h2>
-          <p className="text-[rgba(23,23,23,0.47)] text-base tracking-[0.32px] mt-1">TASK MANAGER</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-black tracking-[1.2px]">Fander University</h2>
+          <p className="text-black text-base tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold text-[rgba(23,23,23,0.47)] tracking-[0.72px] leading-relaxed">
+          <h1 className="text-3xl md:text-4xl font-bold text-black tracking-[0.72px] leading-relaxed">
             Stay calm. <br />
             Stay on track. <br />
             Stay honest.
           </h1>
-          <p className="text-[rgba(23,23,23,0.47)] text-base tracking-[0.32px] max-w-md pt-2">
+          <p className="text-black text-base tracking-[0.32px] max-w-md pt-2">
             Completion isn't the goal. Consistency is. Fander Task manager learns from what you did not deliver, so the next task lands better than the last.
           </p>
-          <p className="text-[rgba(23,23,23,0.47)] text-base font-semibold tracking-[5.28px] pt-2">
+          <p className="text-black text-base font-semibold tracking-[5.28px] pt-2">
             FOCUS · PRIORITY · REFLECTION
           </p>
         </div>
 
-        <p className="text-[rgba(23,23,23,0.47)] text-base font-bold tracking-[0.32px]">v1 - for the semester ahead</p>
+        <p className="text-black text-base font-semibold tracking-[0.32px]">v1 - for the semester ahead</p>
       </div>
 
       {/* Right panel — form, dark bg */}
