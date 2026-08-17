@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify
 from flask_cors import CORS
-from extensions import db, login_manager
+from extensions import db, login_manager, migrate
 from config import Config
 
 def create_app():
@@ -10,6 +10,9 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+    migrate.init_app(app, db)
+
+    from models import User, Task
 
     CORS(app, supports_credentials=True, origins=[os.environ.get("FRONTEND_ORIGIN")])
 
