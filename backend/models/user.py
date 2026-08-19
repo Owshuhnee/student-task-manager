@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 
 class User(db.Model, UserMixin):
@@ -13,5 +14,8 @@ class User(db.Model, UserMixin):
 
     tasks = db.relationship("Task", backref="user", cascade="all, delete-orphan")
 
-    # cascade="all, delete-orphan" - deleting a user deletes their tasks" rule from the schema.
-    # UserMixin - makes class compatable with session-cookie auth
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
