@@ -4,6 +4,8 @@ from flask_cors import CORS
 from extensions import db, login_manager, migrate
 from config import Config
 from routes.auth import auth_bp
+from routes.tasks import tasks_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +24,7 @@ def create_app():
     CORS(app, supports_credentials=True, origins=[os.environ.get("FRONTEND_ORIGIN")])
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(tasks_bp)
 
     @app.route("/api/health")
     def health():
