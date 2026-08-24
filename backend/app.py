@@ -21,6 +21,10 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+    @login_manager.unauthorized_handler
+    def unauthorized():
+        return jsonify({"error": "Authentication required"}), 401
+
     CORS(app, supports_credentials=True, origins=[os.environ.get("FRONTEND_ORIGIN")])
 
     app.register_blueprint(auth_bp)

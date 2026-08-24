@@ -52,3 +52,39 @@ def logout():
 @login_required
 def me():
     return jsonify({"id": current_user.id, "name": current_user.name, "email": current_user.email}), 200
+
+@auth_bp.route("/me", methods=["PATCH"])
+@login_required
+def update_me():
+    data = request.get_json() or {}
+    name = data.get("name")
+    email = data.get("email")
+
+    if email and email != current_user.email:
+        if User.query.filter(User.email == email, User.id != current_user.id).first():
+            return jsonify({"error": "An account with this email already exists"}), 409
+        current_user.email = email
+
+    if name:
+        current_user.name = name
+
+    db.session.commit()
+    return jsonify({"id": current_user.id, "name": current_user.name, "email": current_user.email}), 200
+
+
+@auth_bp.route("/me/password", methods=["PATCH"])
+@login_required
+def change_password():
+    data = request.get_json() or {}
+    current_password = data.get("currentPassword")
+    new_password = data.get("newPassword")
+
+    if not current_password or not new_password:
+        return jsonify({"error": "currentPassword and newPassword are required"}), 400
+
+    if not current_user.check_password(current_password):
+        return jsonify({"error": "Current password is incorrect"}), 401
+
+    current_user.set_password(new_password)
+    db.session.commit()
+    return jsonify({"message": "Password updated"}), 200
