@@ -143,8 +143,20 @@ export default function TaskForm({ existingTask, onSaved, onClose, onRequestDele
                 <option value="Ongoing">In Progress</option>
                 <option value="Complete">Complete</option>
                 <option value="Incomplete">Incomplete</option>
-              </select>
+              </select>              
             </div>
+
+            {status === 'Incomplete' && (
+              <div>
+                <label className="text-xs font-medium text-[#525252]">Reflection</label>
+                <textarea
+                  value={reflection}
+                  onChange={(e) => setReflection(e.target.value)}
+                  rows={2}
+                  className="mt-1 w-full rounded-lg border border-[#e5e5e5] px-3 py-2 text-sm shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)] focus:outline-none focus:border-[#171717]"
+                />
+              </div>
+            )}
 
             <div>
               <label className="text-xs font-medium text-[#525252]">Notes</label>

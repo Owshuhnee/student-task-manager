@@ -6,6 +6,12 @@ from models import Task
 
 tasks_bp = Blueprint("tasks", __name__, url_prefix="/api")
 
+def parse_due_date(value):
+    if not value:
+        return None
+    return datetime.strptime(value, "%Y-%m-%d")
+
+
 @tasks_bp.route("/tasks", methods=["GET"])
 @login_required
 def list_tasks():
@@ -21,12 +27,13 @@ def create_task():
     if not title:
         return jsonify({"error": "title is required"}), 400
 
-    due_at = data.get("dueAt")
     task = Task(
         title=title,
+        description=data.get("description", ""),
         status=data.get("status", "Backlog"),
         priority=data.get("priority", "Medium"),
-        due_at=datetime.fromisoformat(due_at) if due_at else None,
+        due_at=parse_due_date(data.get("due_date")),
+        notes=data.get("notes"),
         reflection=data.get("reflection"),
         user_id=current_user.id,
     )
@@ -45,12 +52,16 @@ def update_task(task_id):
     data = request.get_json() or {}
     if "title" in data:
         task.title = data["title"]
+    if "description" in data:
+        task.description = data["description"]
     if "status" in data:
         task.status = data["status"]
     if "priority" in data:
         task.priority = data["priority"]
-    if "dueAt" in data:
-        task.due_at = datetime.fromisoformat(data["dueAt"]) if data["dueAt"] else None
+    if "due_date" in data:
+        task.due_at = parse_due_date(data["due_date"])
+    if "notes" in data:
+        task.notes = data["notes"]
     if "reflection" in data:
         task.reflection = data["reflection"]
 
