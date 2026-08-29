@@ -24,7 +24,7 @@ export default function ReflectionModal({
       <div className="w-full max-w-lg rounded-2xl bg-white p-6 font-['Manrope'] shadow-xl">
         <p className="text-sm font-medium tracking-[1.6px] text-[#525252]">REQUIRED NOTES</p>
         <p className="mt-2 whitespace-pre-wrap text-base font-medium text-black">
-          {'What happened, and what will you do differently next time?\n\nMissed deadlines happen. Take a moment to name what got in the way — no judgment, just clarity for next time.'}
+          {'What happened, and what will you do differently next time?\n\nMissed deadlines happen. Take a moment to name what got in the way.'}
         </p>
 
         <textarea

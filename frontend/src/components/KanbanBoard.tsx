@@ -3,11 +3,11 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import TaskColumn from './TaskColumn';
 import type { Task, TaskStatus } from '../types/task';
 
-const COLUMNS: { status: TaskStatus; label: string; accentColor: string }[] = [
-  { status: 'Backlog', label: 'To do', accentColor: 'bg-[#a3a3a3]' },
-  { status: 'Ongoing', label: 'In Progress', accentColor: 'bg-[#3b82f6]' },
-  { status: 'Complete', label: 'Complete', accentColor: 'bg-[#22c55e]' },
-  { status: 'Incomplete', label: 'Incomplete', accentColor: 'bg-[#f97316]' },
+const COLUMNS: { status: TaskStatus; label: string }[] = [
+  { status: 'Backlog', label: 'To do' },
+  { status: 'Ongoing', label: 'In Progress' },
+  { status: 'Complete', label: 'Complete' },
+  { status: 'Incomplete', label: 'Incomplete' },
 ];
 
 interface KanbanBoardProps {
@@ -34,13 +34,12 @@ export default function KanbanBoard({ tasks, onTaskClick, onStatusChange }: Kanb
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:snap-none md:gap-8">
         {COLUMNS.map((col) => (
           <TaskColumn
             key={col.status}
             status={col.status}
             label={col.label}
-            accentColor={col.accentColor}
             tasks={tasks.filter((t) => t.status === col.status)}
             onTaskClick={onTaskClick}
           />

@@ -21,15 +21,21 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex font-['Manrope']">
-      {/* Left panel — branding, hidden on small screens */}
-      <div className="hidden md:flex md:w-1/2 bg-[#171717] flex-col justify-center gap-[60px] p-16 lg:p-24">
+    <div className="min-h-screen flex flex-col md:flex-row font-['Manrope']">
+      {/* Mobile/tablet-only */}
+      <div className="md:hidden bg-[#171717] px-6 py-6 text-center">
+        <h2 className="text-xl font-bold text-white tracking-[1.2px]">Fander University</h2>
+        <p className="text-[#a3a3a3] text-xs tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
+      </div>
+
+      {/* Left panel — full branding, hidden on Mobile/Tablet */}
+      <div className="hidden md:flex md:w-1/2 bg-[#171717] flex-col p-16 lg:p-56">
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-[1.2px]">Fander University</h2>
+          <h2 className="text-4xl font-bold text-white tracking-[1.2px]">Fander University</h2>
           <p className="text-[#a3a3a3] text-base tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
         </div>
 
-        <div className="space-y-2">
+        <div className="mt-20 lg:mt-28 space-y-2">
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-[7.2px] leading-relaxed">
             Stay calm. <br />
             Stay on track. <br />
@@ -43,7 +49,7 @@ function Login() {
           </p>
         </div>
 
-        <p className="text-white text-base font-bold tracking-[0.8px]">v1 - for the semester ahead</p>
+        <p className="mt-auto text-white text-base font-bold tracking-[0.8px]">v1 - for the semester ahead</p>
       </div>
 
       {/* Right panel — form */}
@@ -87,7 +93,7 @@ function Login() {
             </button>
           </form>
 
-          <p className="mt-6 text-base">
+          <p className="mt-6 text-base text-center">
             <span className="text-[#a3a3a3] font-bold tracking-[0.32px]">New here? </span>
             <Link to="/register" className="font-bold tracking-[0.32px] text-black hover:underline">
               Create an account

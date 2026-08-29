@@ -109,40 +109,42 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white font-['Manrope']">
-      <header className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+      <header className="flex items-center justify-between border-b border-[#171717] px-8 py-6 lg:px-16">
         <div>
-          <h1 className="text-sm font-bold tracking-wide text-[#171717]">Fander University</h1>
-          <p className="text-[10px] font-medium tracking-widest text-[#a3a3a3]">STUDENT TASK MANAGER</p>
+          <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
+          <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
         </div>
-        <nav className="flex items-center gap-4">
-          <Link to="/dashboard" className="text-sm font-medium text-[#171717]">
+        <nav className="flex items-center gap-8">
+          <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
             Dashboard
           </Link>
           <Link
             to="/account"
-            className="flex items-center gap-1.5 rounded-full border border-[#e5e5e5] px-3 py-1.5 text-sm font-medium text-[#171717]"
+            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
           >
-            <UserSquare size={16} weight="bold" />
+            <UserSquare size={20} weight="regular" />
             {user?.name}
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-sm font-medium text-[#525252] hover:text-[#171717]"
+            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
           >
-            <SignOut size={16} weight="bold" />
+            <SignOut size={20} weight="regular" />
             Logout
           </button>
         </nav>
       </header>
 
-      <main className="px-6 py-6">
-        <div className="mb-6 flex items-start justify-between">
+      <main className="px-8 py-10 lg:px-16">
+        <div className="mb-10 flex items-start justify-between">
           <div>
-            <p className="text-[10px] font-semibold tracking-widest text-[#a3a3a3]">
+            <p className="text-sm font-semibold tracking-widest text-[#a3a3a3]">
               {dayLabel}, {dateLabel}
             </p>
-            <h2 className="mt-1 text-xl font-bold text-[#171717]">Hey {user?.name}, Here's whats next.</h2>
-            <p className="mt-1 text-sm text-[#525252]">
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold text-[#171717]">
+              Hey {user?.name}, Here's whats next.
+            </h2>
+            <p className="mt-2 text-base text-[#525252]">
               {pendingCount === 0
                 ? "You're all caught up. Take a breath."
                 : `You have ${pendingCount} task${pendingCount > 1 ? 's' : ''} to do.`}
@@ -150,7 +152,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={openCreateForm}
-            className="rounded-2xl bg-[#171717] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2b2b2b]"
+            className="rounded-2xl bg-[#171717] px-6 py-3 text-sm font-semibold text-white hover:bg-[#2b2b2b]"
           >
             + New Task
           </button>

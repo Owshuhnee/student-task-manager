@@ -67,27 +67,27 @@ export default function AccountSettings() {
 
   return (
     <div className="min-h-screen bg-white font-['Manrope']">
-      <header className="flex items-center justify-between border-b border-[#e5e5e5] px-6 py-4">
+      <header className="flex items-center justify-between border-b border-[#171717] px-8 py-6 lg:px-16">
         <div>
-          <h1 className="text-sm font-bold tracking-wide text-[#171717]">Fander University</h1>
-          <p className="text-[10px] font-medium tracking-widest text-[#a3a3a3]">STUDENT TASK MANAGER</p>
+          <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
+          <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
         </div>
-        <nav className="flex items-center gap-4">
-          <Link to="/dashboard" className="text-sm font-medium text-[#525252] hover:text-[#171717]">
+        <nav className="flex items-center gap-8">
+          <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
             Dashboard
           </Link>
           <Link
             to="/account"
-            className="flex items-center gap-1.5 rounded-full border border-[#e5e5e5] px-3 py-1.5 text-sm font-medium text-[#171717]"
+            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
           >
-            <UserSquare size={16} weight="bold" />
+            <UserSquare size={20} weight="regular" />
             {user?.name}
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-sm font-medium text-[#525252] hover:text-[#171717]"
+            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
           >
-            <SignOut size={16} weight="bold" />
+            <SignOut size={20} weight="regular" />
             Logout
           </button>
         </nav>

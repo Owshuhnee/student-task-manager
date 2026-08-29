@@ -27,34 +27,42 @@ function Register() {
   }
 
   return (
-    <div className="min-h-screen flex font-['Manrope']">
-      {/* Left panel — branding, white bg, dark text, hidden on small screens (mobile or table) */}
-      <div className="hidden md:flex md:w-1/2 bg-white flex-col justify-center gap-[60px] p-16 lg:p-24">
+    <div className="min-h-screen flex flex-col md:flex-row font-['Manrope']">
+      {/* Mobile/tablet-only compact branding bar */}
+      <div className="md:hidden bg-white px-6 py-6 text-center">
+        <div className="w-full max-w-[370px] mx-auto">
+          <h2 className="text-xl font-bold text-black tracking-[1.2px]">Fander University</h2>
+          <p className="text-[#525252] text-xs tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
+        </div>
+      </div>
+
+      {/* Left panel — branding, white bg, dark text, hidden on small screens (mobile or tablet) */}
+      <div className="hidden md:flex md:w-1/2 bg-white flex-col p-16 lg:p-56">
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-black tracking-[1.2px]">Fander University</h2>
-          <p className="text-black text-base tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
+          <h2 className="text-4xl font-bold text-black tracking-[1.2px]">Fander University</h2>
+          <p className="text-[#525252] text-base tracking-[3.2px] mt-1">STUDENT TASK MANAGER</p>
         </div>
 
-        <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold text-black tracking-[0.72px] leading-relaxed">
+        <div className="mt-20 lg:mt-28 space-y-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-black tracking-[7.2px] leading-relaxed">
             Stay calm. <br />
             Stay on track. <br />
             Stay honest.
           </h1>
-          <p className="text-black text-base tracking-[0.32px] max-w-md pt-2">
+          <p className="text-black text-base tracking-[0.8px] max-w-md pt-2">
             Completion isn't the goal. Consistency is. Fander Task manager learns from what you did not deliver, so the next task lands better than the last.
           </p>
-          <p className="text-black text-base font-semibold tracking-[5.28px] pt-2">
+          <p className="text-black text-base font-semibold tracking-[3.2px] pt-2">
             FOCUS · PRIORITY · REFLECTION
           </p>
         </div>
 
-        <p className="text-black text-base font-semibold tracking-[0.32px]">v1 - for the semester ahead</p>
+        <p className="mt-auto text-black text-base font-bold tracking-[0.8px]">v1 - for the semester ahead</p>
       </div>
 
       {/* Right panel — form, dark bg */}
       <div className="flex-1 bg-[#171717] flex items-center justify-center p-6 md:p-16">
-        <div className="w-full max-w-[372px]">
+        <div className="w-full max-w-[370px]">
           <p className="text-white text-base font-bold tracking-[0.32px] mb-1">Get Started</p>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-[0.72px] mb-1">Create your space</h1>
           <p className="text-white text-base font-bold tracking-[0.32px] mb-8">Free forever for students.</p>
@@ -70,7 +78,7 @@ function Register() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
+                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] bg-white text-black px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
 
@@ -80,7 +88,7 @@ function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
+                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] bg-white text-black px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
 
@@ -91,7 +99,7 @@ function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
+                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] bg-white text-black px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
 
@@ -102,7 +110,7 @@ function Register() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
+                className="w-full h-[50px] rounded-lg border border-[#a3a3a3] bg-white text-black px-3 text-base tracking-[0.32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
 
@@ -116,7 +124,7 @@ function Register() {
 
           <p className="mt-6 text-base text-center">
             <span className="text-white font-bold tracking-[0.32px]">Already have an account? </span>
-            <Link to="/login" className="font-bold tracking-[0.32px] text-white hover:underline">
+            <Link to="/login" className="font-bold tracking-[0.32px] text-gray-400 hover:underline">
               Login
             </Link>
           </p>
