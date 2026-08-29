@@ -7,7 +7,14 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
     headers: { 'Content-Type': 'application/json', ...options.headers },
   });
   if (!res.ok) {
-    throw new Error(`API error ${res.status}: ${await res.text()}`);
+    let message = `Request failed with status ${res.status}`;
+    try {
+      const data = await res.json();
+      if (data?.error) message = data.error;
+    } catch {
+      // response wasn't JSON — fall back to the generic message
+    }
+    throw new Error(message);
   }
   return res.json();
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { UserSquare, SignOut } from '@phosphor-icons/react';
+import { UserSquare, SignOut, List, X } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import * as tasksApi from '../api/tasks';
 import KanbanBoard from '../components/KanbanBoard';
@@ -23,6 +23,8 @@ export default function Dashboard() {
   const [reflectionValue, setReflectionValue] = useState('');
 
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     tasksApi.getTasks().then((data) => {
@@ -101,6 +103,11 @@ export default function Dashboard() {
     setReflectionValue('');
   }
 
+  function handleMobileLogout() {
+    setMenuOpen(false);
+    handleLogout();
+  }
+
   const pendingCount = tasks.filter((t) => t.status === 'Backlog' || t.status === 'Ongoing').length;
 
   const today = new Date();
@@ -109,33 +116,74 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white font-['Manrope']">
-      <header className="flex items-center justify-between border-b border-[#171717] px-8 py-6 lg:px-16">
-        <div>
-          <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
-          <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
-        </div>
-        <nav className="flex items-center gap-8">
-          <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
-            Dashboard
-          </Link>
-          <Link
-            to="/account"
-            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
-          >
-            <UserSquare size={20} weight="regular" />
-            {user?.name}
-          </Link>
+      <header className="border-b border-[#171717] px-8 py-6 lg:px-16">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
+            <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
+          </div>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
+              Dashboard
+            </Link>
+            <Link
+              to="/account"
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <UserSquare size={20} weight="regular" />
+              {user?.name}
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <SignOut size={20} weight="regular" />
+              Logout
+            </button>
+          </nav>
+
+          {/* Mobile/tablet hamburger toggle */}
           <button
-            onClick={handleLogout}
-            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="text-[#171717] md:hidden"
+            aria-label="Toggle menu"
           >
-            <SignOut size={20} weight="regular" />
-            Logout
+            {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
           </button>
-        </nav>
+        </div>
+
+        {/* Mobile/tablet dropdown menu */}
+        {menuOpen && (
+          <nav className="mt-6 flex flex-col gap-4 md:hidden">
+            <Link
+              to="/dashboard"
+              onClick={() => setMenuOpen(false)}
+              className="text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/account"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <UserSquare size={20} weight="regular" />
+              {user?.name}
+            </Link>
+            <button
+              onClick={handleMobileLogout}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <SignOut size={20} weight="regular" />
+              Logout
+            </button>
+          </nav>
+        )}
       </header>
 
-      <main className="px-8 py-10 lg:px-16">
+      <main className="px-8 pt-10 pb-24 lg:px-16 md:pb-10">
         <div className="mb-10 flex items-start justify-between">
           <div>
             <p className="text-sm font-semibold tracking-widest text-[#a3a3a3]">
@@ -152,7 +200,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={openCreateForm}
-            className="rounded-2xl bg-[#171717] px-6 py-3 text-sm font-semibold text-white hover:bg-[#2b2b2b]"
+            className="fixed inset-x-0 bottom-6 z-30 mx-auto w-fit rounded-2xl bg-[#171717] px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#2b2b2b] md:static md:mx-0 md:w-auto md:shadow-none"
           >
             + New Task
           </button>

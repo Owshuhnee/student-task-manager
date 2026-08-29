@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { UserCircle, UserSquare, SignOut } from '@phosphor-icons/react';
+import { UserCircle, UserSquare, SignOut, List, X } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 
 export default function AccountSettings() {
@@ -21,9 +21,16 @@ export default function AccountSettings() {
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [savingPassword, setSavingPassword] = useState(false);
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   async function handleLogout() {
     await logout();
     navigate('/login');
+  }
+
+  function handleMobileLogout() {
+    setMenuOpen(false);
+    handleLogout();
   }
 
   async function handleProfileSubmit(e: FormEvent) {
@@ -32,7 +39,7 @@ export default function AccountSettings() {
     setProfileSuccess('');
     setSavingProfile(true);
     try {
-      await updateProfile( name, email );
+      await updateProfile(name, email);
       setProfileSuccess('Profile updated.');
     } catch {
       setProfileError('Could not update profile. Please try again.');
@@ -53,7 +60,7 @@ export default function AccountSettings() {
 
     setSavingPassword(true);
     try {
-      await changePassword( currentPassword, newPassword );
+      await changePassword(currentPassword, newPassword);
       setPasswordSuccess('Password changed.');
       setCurrentPassword('');
       setNewPassword('');
@@ -67,30 +74,71 @@ export default function AccountSettings() {
 
   return (
     <div className="min-h-screen bg-white font-['Manrope']">
-      <header className="flex items-center justify-between border-b border-[#171717] px-8 py-6 lg:px-16">
-        <div>
-          <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
-          <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
-        </div>
-        <nav className="flex items-center gap-8">
-          <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
-            Dashboard
-          </Link>
-          <Link
-            to="/account"
-            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
-          >
-            <UserSquare size={20} weight="regular" />
-            {user?.name}
-          </Link>
+      <header className="border-b border-[#171717] px-8 py-6 lg:px-16">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-[#171717]">Fander University</h1>
+            <p className="text-sm tracking-wide text-[#a3a3a3]">STUDENT TASK MANAGER</p>
+          </div>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link to="/dashboard" className="text-base font-bold text-[#525252] hover:text-[#171717]">
+              Dashboard
+            </Link>
+            <Link
+              to="/account"
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <UserSquare size={20} weight="regular" />
+              {user?.name}
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <SignOut size={20} weight="regular" />
+              Logout
+            </button>
+          </nav>
+
+          {/* Mobile/tablet hamburger toggle */}
           <button
-            onClick={handleLogout}
-            className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="text-[#171717] md:hidden"
+            aria-label="Toggle menu"
           >
-            <SignOut size={20} weight="regular" />
-            Logout
+            {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
           </button>
-        </nav>
+        </div>
+
+        {/* Mobile/tablet dropdown menu */}
+        {menuOpen && (
+          <nav className="mt-6 flex flex-col gap-4 md:hidden">
+            <Link
+              to="/dashboard"
+              onClick={() => setMenuOpen(false)}
+              className="text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/account"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <UserSquare size={20} weight="regular" />
+              {user?.name}
+            </Link>
+            <button
+              onClick={handleMobileLogout}
+              className="flex items-center gap-1.5 text-base font-bold text-[#525252] hover:text-[#171717]"
+            >
+              <SignOut size={20} weight="regular" />
+              Logout
+            </button>
+          </nav>
+        )}
       </header>
 
       <main className="flex flex-col items-center px-4 py-16">
