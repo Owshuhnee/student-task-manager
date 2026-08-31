@@ -41,8 +41,8 @@ export default function AccountSettings() {
     try {
       await updateProfile(name, email);
       setProfileSuccess('Profile updated.');
-    } catch {
-      setProfileError('Could not update profile. Please try again.');
+    } catch (err) {
+      setProfileError(err instanceof Error ? err.message : 'Could not update profile. Please try again.');
     } finally {
       setSavingProfile(false);
     }
@@ -52,6 +52,11 @@ export default function AccountSettings() {
     e.preventDefault();
     setPasswordError('');
     setPasswordSuccess('');
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError('Please fill in all password fields.');
+      return;
+    }
 
     if (newPassword !== confirmPassword) {
       setPasswordError('New passwords do not match.');
@@ -65,8 +70,8 @@ export default function AccountSettings() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch {
-      setPasswordError('Current password is incorrect.');
+    } catch (err) {
+      setPasswordError(err instanceof Error ? err.message : 'Current password is incorrect.');
     } finally {
       setSavingPassword(false);
     }
