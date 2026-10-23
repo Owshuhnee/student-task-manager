@@ -34,3 +34,6 @@ venv/
 *.egg-info/
 .pytest_cache/
 instance/
+
+cookies.txt
+*.zip
